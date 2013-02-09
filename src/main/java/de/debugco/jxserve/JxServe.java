@@ -16,19 +16,30 @@
 
 package de.debugco.jxserve;
 
-import de.debugco.jxserve.shutdownservice.JxShutdownService;
+import de.debugco.jxserve.shutdownservice.JxShutdownServiceImpl;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JxServe {
-    //private final static Logger LOGGER = Logger.getLogger(JxServe.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(JxServe.class.getName());
 
     private static boolean quit = false;
 
     public static void main(String[] args) {
-        Configuration configuration = new Configuration(null); // TODO configuration file / argument handling
+        Configuration configuration = new FileConfiguration(System.getProperty("config")); // TODO configuration file / argument handling
         JxServicePublisher jxServicePublisher = new JxServicePublisher(configuration);
-        jxServicePublisher.publish(JxShutdownService.class);
+        jxServicePublisher.publish(JxShutdownServiceImpl.class);
+        if (args != null) {
+            for (String clazzName : args) {
+                try {
+                    Class clazz = Class.forName(clazzName);
+                    jxServicePublisher.publish(clazz);
+                } catch (ClassNotFoundException e) {
+                    LOGGER.log(Level.WARNING, String.format("The class \"%s\" couldn't be found", clazzName), e);
+                }
+            }
+        }
         while(!quit) {
             try {
                 Thread.sleep(1000);

@@ -24,13 +24,13 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Configuration {
+public class FileConfiguration implements Configuration {
     private final static Logger LOGGER = Logger.getLogger(Configuration.class.getName());
 
     private Properties properties;
     private PublishUrl publishUrl;
 
-    public Configuration(String fileName) {
+    public FileConfiguration(String fileName) {
         properties = new Properties();
         if (fileName != null && !"".equals(fileName)) {
             File file = new File(fileName);

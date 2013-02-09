@@ -20,11 +20,12 @@ import de.debugco.jxserve.JxServe;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceClient;
 
 @WebService(name = "JxShutdownService", portName = "JxShutdownServicePort",
-            endpointInterface = "de.debugco.jxserve.shutdownservice.JxShutdownService",
-            serviceName = "JxShutdownService")
-public class JxShutdownService {
+        endpointInterface = "de.debugco.jxserve.shutdownservice.JxShutdownService",
+        serviceName = "JxShutdownService")
+public class JxShutdownServiceImpl implements JxShutdownService {
     @WebMethod(operationName = "shutdown")
     public void shutdown() {
         JxServe.setQuit(true);
